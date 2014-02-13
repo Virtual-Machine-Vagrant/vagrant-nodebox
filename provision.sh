@@ -30,7 +30,7 @@ sudo apt-get update
 
 
 ### Install system dependencies
-sudo apt-get install -y ant apache2 curl git-core libaio1 libaio-dev subversion
+sudo apt-get install -y ant apache2 curl git libaio1 libaio-dev nfs-common openssl subversion
 
 
 ### NodeJS ###
