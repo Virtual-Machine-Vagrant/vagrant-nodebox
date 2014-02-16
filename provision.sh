@@ -11,11 +11,8 @@
 # Ant
 
 ### NodeJS Global Modules ###
-# Chai
-# JSHint
-# Mocha
+# Cucumber
 # N
-# Sinon
 # Supervisor
 
 
@@ -49,11 +46,8 @@ ln -s /opt/node-v0.10.25-linux-x64 /opt/nodejs
 export NODE_PATH=/opt/nodejs/lib/node_modules:/opt/dev/node_modules:/opt/dev/lib/node_modules
 
 # Install global Node dependencies
-/opt/nodejs/bin/npm install -g chai
-/opt/nodejs/bin/npm install -g jshint
-/opt/nodejs/bin/npm install -g mocha
+/opt/nodejs/bin/npm install -g cucumber
 /opt/nodejs/bin/npm install -g n
-/opt/nodejs/bin/npm install -g sinon
 /opt/nodejs/bin/npm install -g supervisor
 
 

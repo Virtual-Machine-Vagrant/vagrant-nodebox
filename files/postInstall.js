@@ -74,31 +74,10 @@ output("System architecture", is64Bit ? process.arch === "x64" : process.arch ==
 
 /* Check global dependencies */
 try {
-	require("chai");
-	output("NodeJS Chai", true);
+	require("cucumber");
+	output("NodeJS Cucumber", true);
 } catch(err) {
-	output("NodeJS Chai", false);
-}
-
-try {
-	require("jshint");
-	output("NodeJS JSHint", true);
-} catch(err) {
-	output("NodeJS JSHint", false);
-}
-
-try {
-	require("mocha");
-	output("NodeJS Mocha", true);
-} catch(err) {
-	output("NodeJS Mocha", false);
-}
-
-try {
-	require("sinon");
-	output("NodeJS Sinon", true);
-} catch(err) {
-	output("NodeJS Sinon", false);
+	output("NodeJS Cucumber", false);
 }
 
 try {
