@@ -182,6 +182,10 @@ echo "nodebox" > /tmp/hostname
 sudo mv /tmp/hostname /etc/hostname
 
 
+### Install git-up gem ###
+sudo gem install git-up
+
+
 
 ### Add binaries to path ###
 
