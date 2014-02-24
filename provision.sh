@@ -45,6 +45,9 @@ ln -s /opt/node-v0.10.25-linux-x64 /opt/nodejs
 # Set the node_path
 export NODE_PATH=/opt/nodejs/lib/node_modules:/opt/dev/node_modules:/opt/dev/lib/node_modules
 
+# Update NPM to the latest version
+npm update npm -g
+
 # Install global Node dependencies
 /opt/nodejs/bin/npm install -g cucumber
 /opt/nodejs/bin/npm install -g n
