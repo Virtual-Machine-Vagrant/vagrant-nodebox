@@ -52,6 +52,8 @@ npm update npm -g
 /opt/nodejs/bin/npm install -g cucumber
 /opt/nodejs/bin/npm install -g n
 /opt/nodejs/bin/npm install -g supervisor
+/opt/nodejs/bin/npm install -g commander
+/opt/nodejs/bin/npm install -g fs-extra
 
 
 ### MongoDB ###
@@ -195,10 +197,11 @@ sudo gem install git-up
 
 # First run the command
 export PATH=$PATH:/opt/mongodb/bin:/opt/mysql/server-5.6/bin:/opt/nodejs/bin
+export NODE_PATH=/opt/nodejs/lib/node_modules:/opt/dev/node_modules:/opt/dev/lib/node_modules:/usr/local/lib/node_modules
 
 # Now save to the /etc/bash.bashrc file so it works on reboot
 cp /etc/bash.bashrc /tmp/bash.bashrc
-printf "\n#Add binaries to path\n\nexport PATH=$PATH:/opt/mongodb/bin:/opt/mysql/server-5.6/bin:/opt/nodejs/bin\nexport NODE_PATH=/opt/nodejs/lib/node_modules:/opt/dev/node_modules:/opt/dev/lib/node_modules" > /tmp/path
+printf "\n#Add binaries to path\n\nexport PATH=$PATH:/opt/mongodb/bin:/opt/mysql/server-5.6/bin:/opt/nodejs/bin\nexport NODE_PATH=/opt/nodejs/lib/node_modules:/opt/dev/node_modules:/opt/dev/lib/node_modules:/usr/local/lib/node_modules" > /tmp/path
 cat /tmp/path >> /tmp/bash.bashrc
 sudo chown root:root /tmp/bash.bashrc
 sudo mv /tmp/bash.bashrc /etc/bash.bashrc
