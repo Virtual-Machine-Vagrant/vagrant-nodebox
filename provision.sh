@@ -189,6 +189,7 @@ sudo mv /tmp/hostname /etc/hostname
 
 ### Install git-up gem ###
 sudo gem install git-up
+sudo gem install travis
 
 
 
