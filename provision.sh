@@ -5,6 +5,7 @@
 
 ### Software ###
 # NodeJS 0.10.25
+# Ruby 2.1.1
 # Apache
 # MongoDB 2.4.9
 # MySQL 5.6.16
@@ -43,7 +44,7 @@ mv /tmp/node-v0.10.25-linux-x64 /opt/node-v0.10.25-linux-x64
 ln -s /opt/node-v0.10.25-linux-x64 /opt/nodejs
 
 # Set the node_path
-export NODE_PATH=/opt/nodejs/lib/node_modules:/opt/dev/node_modules:/opt/dev/lib/node_modules
+export NODE_PATH=/opt/nodejs/lib/node_modules:/opt/dev/node_modules:/opt/dev/lib/node_modules:/usr/local/lib/node_modules
 
 # Update NPM to the latest version
 npm update npm -g
@@ -187,9 +188,26 @@ echo "nodebox" > /tmp/hostname
 sudo mv /tmp/hostname /etc/hostname
 
 
-### Install git-up gem ###
+### Install Ruby ###
+
+# Remove installed version
+sudo apt-get purge ruby ruby-dev ruby1.8*
+
+# Download the source code
+wget http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.1.tar.gz -O /tmp/ruby-2.1.1.tar.gz
+
+# Unpack it
+cd /tmp
+tar -zxvf /tmp/ruby-2.1.1.tar.gz
+cd  /tmp/ruby-2.1.1
+./configure
+
+
+### Install Ruby gems ###
 sudo gem install git-up
 sudo gem install travis
+make
+sudo make install
 
 
 
