@@ -63,6 +63,7 @@ wget http://nodejs.org/dist/v0.6.12/node-v0.6.12.tar.gz -O /tmp/node-v0.6.12.tar
 # Unpack it
 cd /tmp
 tar -zxvf /tmp/node-v0.6.12.tar.gz
+cd /tmp/node-v0.6.12
 ./configure --prefix=/opt/nodejs-v0.6.12-linux-x64
 make
 make install
