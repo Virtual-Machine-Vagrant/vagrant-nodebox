@@ -6,8 +6,8 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-    #config.vm.box = "hashicorp/precise64"
-    config.vm.box = "ffuenf/debian-6.0.9-amd64"
+    config.vm.box = "hashicorp/precise64"
+    #config.vm.box = "ffuenf/debian-6.0.9-amd64"
 
     config.vm.network :private_network,
         ip: "10.20.30.60"
