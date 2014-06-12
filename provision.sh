@@ -90,6 +90,10 @@ npm update npm -g
 /opt/nodejs/bin/npm install -g fs-extra
 
 
+# Install the latest version of Node 10
+sudo n stable
+
+
 ### MongoDB ###
 
 
