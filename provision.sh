@@ -92,6 +92,10 @@ npm update npm -g
 /opt/nodejs/bin/npm config set loglevel http
 
 
+# Install the latest version of Node 10
+sudo n stable
+
+
 ### MongoDB ###
 
 
