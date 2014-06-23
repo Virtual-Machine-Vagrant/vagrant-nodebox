@@ -89,6 +89,8 @@ npm update npm -g
 /opt/nodejs/bin/npm install -g commander
 /opt/nodejs/bin/npm install -g fs-extra
 
+/opt/nodejs/bin/npm config set loglevel http
+
 
 ### MongoDB ###
 
