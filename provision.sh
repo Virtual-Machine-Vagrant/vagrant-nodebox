@@ -86,8 +86,11 @@ npm update npm -g
 /opt/nodejs/bin/npm install -g cucumber
 /opt/nodejs/bin/npm install -g n
 /opt/nodejs/bin/npm install -g supervisor
+/opt/nodejs/bin/npm install -g grunt-cli
 /opt/nodejs/bin/npm install -g commander
 /opt/nodejs/bin/npm install -g fs-extra
+/opt/nodejs/bin/npm install -g yo
+/opt/nodejs/bin/npm install -g bower
 
 /opt/nodejs/bin/npm config set loglevel http
 
