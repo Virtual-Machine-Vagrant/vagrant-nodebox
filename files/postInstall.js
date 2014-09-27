@@ -87,6 +87,13 @@ try {
 	output("NodeJS Supervisor", false);
 }
 
+try {
+	require("bower");
+	output("NodeJS Bower", true);
+} catch(err) {
+	output("NodeJS Bower", false);
+}
+
 
 
 /* N */
