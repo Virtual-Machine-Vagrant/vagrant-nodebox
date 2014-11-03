@@ -4,7 +4,7 @@
 # file, everything that builds the box is executed.
 
 ### Software ###
-# NodeJS 0.10.25
+# NodeJS 0.10.33
 # Ruby 2.1.1
 # Apache
 # MongoDB 2.4.9
@@ -36,13 +36,13 @@ sudo apt-get install -y ant apache2 build-essential curl g++ git libaio1 libaio-
 
 ### Node 0.10
 # Download the binary
-wget http://nodejs.org/dist/v0.10.26/node-v0.10.26-linux-x64.tar.gz -O /tmp/node-v0.10.26-linux-x64.tar.gz
+wget http://nodejs.org/dist/v0.10.33/node-v0.10.33-linux-x64.tar.gz -O /tmp/node-v0.10.33-linux-x64.tar.gz
 
 # Unpack it
 cd /tmp
-tar -zxvf /tmp/node-v0.10.26-linux-x64.tar.gz
-mv /tmp/node-v0.10.26-linux-x64 /opt/node-v0.10.26-linux-x64
-ln -s /opt/node-v0.10.26-linux-x64 /opt/nodejs-0.10
+tar -zxvf /tmp/node-v0.10.33-linux-x64.tar.gz
+mv /tmp/node-v0.10.33-linux-x64 /opt/node-v0.10.33-linux-x64
+ln -s /opt/node-v0.10.33-linux-x64 /opt/nodejs-0.10
 sudo ln -s /opt/nodejs-0.10/bin/node /usr/bin/nodejs0.10
 
 
