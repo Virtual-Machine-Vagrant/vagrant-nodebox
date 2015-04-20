@@ -28,6 +28,8 @@ The Vagrant box is assigned the IP 10.20.30.60.  You can access all the services
 
 This box has [NFS networking](https://docs.vagrantup.com/v2/synced-folders/nfs.html) set up on it.  This makes the box much faster.  There may be a little bit of work to get this working on your machine.
 
+On Unix-based machines, you'll most likely need to log in as sudo
+
 ### Windows
 
 Vagrant seems to be ignored on Windows machines.  Various blog posts say that it is possible however.
@@ -42,7 +44,11 @@ Run the following command:
 
     sudo apt-get install nfs-kernel-server nfs-common portmap
 
-### Mac/Other Linux
+### Mac
+
+This should just work on a Mac.
+
+###Other Linux
 
 _@todo_
 
