@@ -4,17 +4,13 @@
 # file, everything that builds the box is executed.
 
 ### Software ###
-# NodeJS 0.10.33
+# NodeJS 0.10.25
 # Ruby 2.1.1
 # Apache
 # MongoDB 2.4.9
 # MySQL 5.6.16
 # Ant
-
-### NodeJS Global Modules ###
-# Cucumber
-# N
-# Supervisor
+# Git
 
 
 ### Build the box
@@ -28,50 +24,21 @@ sudo apt-get update
 
 
 ### Install system dependencies
-sudo apt-get install -y ant apache2 build-essential curl g++ git libaio1 libaio-dev nfs-common openssl subversion
+sudo apt-get install -y ant apache2 build-essential curl g++ git libaio1 libaio-dev nfs-common openssl
 
 
 ### NodeJS ###
 
 
-### Node 0.10
+### Node 0.10.25
 # Download the binary
-wget http://nodejs.org/dist/v0.10.33/node-v0.10.33-linux-x64.tar.gz -O /tmp/node-v0.10.33-linux-x64.tar.gz
+wget http://nodejs.org/dist/v0.10.25/node-v0.10.25-linux-x64.tar.gz -O /tmp/node-v0.10.25-linux-x64.tar.gz
 
 # Unpack it
 cd /tmp
-tar -zxvf /tmp/node-v0.10.33-linux-x64.tar.gz
-mv /tmp/node-v0.10.33-linux-x64 /opt/node-v0.10.33-linux-x64
-ln -s /opt/node-v0.10.33-linux-x64 /opt/nodejs-0.10
-sudo ln -s /opt/nodejs-0.10/bin/node /usr/bin/nodejs0.10
-
-
-### Node 0.8
-wget http://nodejs.org/dist/v0.8.26/node-v0.8.26-linux-x64.tar.gz -O /tmp/node-v0.8.26-linux-x64.tar.gz
-
-# Unpack it
-cd /tmp
-tar -zxvf /tmp/node-v0.8.26-linux-x64.tar.gz
-mv /tmp/node-v0.8.26-linux-x64 /opt/node-v0.8.26-linux-x64
-ln -s /opt/node-v0.8.26-linux-x64 /opt/nodejs-0.8
-sudo ln -s /opt/nodejs-0.8/bin/node /usr/bin/nodejs0.8
-
-
-### Node 0.6
-wget http://nodejs.org/dist/v0.6.12/node-v0.6.12.tar.gz -O /tmp/node-v0.6.12.tar.gz
-
-# Unpack it
-cd /tmp
-tar -zxvf /tmp/node-v0.6.12.tar.gz
-cd /tmp/node-v0.6.12
-./configure --prefix=/opt/nodejs-v0.6.12-linux-x64
-make
-make install
-ln -s /opt/nodejs-v0.6.12-linux-x64 /opt/nodejs-0.6
-sudo ln -s /opt/nodejs-0.6/bin/node /usr/bin/nodejs0.6
-
-# Set the path to v0.10
-ln -s /opt/nodejs-0.10 /opt/nodejs
+tar -zxvf /tmp/node-v0.10.25-linux-x64.tar.gz
+mv /tmp/node-v0.10.25-linux-x64 /opt/node-v0.10.25-linux-x64
+ln -s /opt/node-v0.10.25-linux-x64 /opt/nodejs
 
 # Set the node_path
 export NODE_PATH=/opt/nodejs/lib/node_modules
@@ -79,24 +46,10 @@ export NODE_PATH=$NODE_PATH:/opt/dev/node_modules
 export NODE_PATH=$NODE_PATH:/opt/dev/lib/node_modules
 export NODE_PATH=$NODE_PATH:/usr/local/lib/node_modules
 
-# Update NPM to the latest version
-npm update npm -g
-
 # Install global Node dependencies
-/opt/nodejs/bin/npm install -g cucumber
 /opt/nodejs/bin/npm install -g n
-/opt/nodejs/bin/npm install -g supervisor
-/opt/nodejs/bin/npm install -g grunt-cli
-/opt/nodejs/bin/npm install -g commander
-/opt/nodejs/bin/npm install -g fs-extra
-/opt/nodejs/bin/npm install -g yo
-/opt/nodejs/bin/npm install -g bower
 
 /opt/nodejs/bin/npm config set loglevel http
-
-
-# Install the latest version of Node 10
-sudo n stable
 
 
 ### MongoDB ###
@@ -180,16 +133,16 @@ sudo service mysql.server start
 /opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT ALL PRIVILEGES ON *.* TO root@'127.0.0.1' IDENTIFIED BY 'password';"
 /opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT ALL PRIVILEGES ON *.* TO root@'%' IDENTIFIED BY 'password';"
 
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "CREATE USER 'esgsys'@'localhost' IDENTIFIED BY 'esgsys';"
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "CREATE USER 'esgsys'@'127.0.0.1' IDENTIFIED BY 'esgsys';"
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "CREATE USER 'esgsys'@'%' IDENTIFIED BY 'esgsys';"
+/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "CREATE USER 'nodebox'@'localhost' IDENTIFIED BY 'nodebox';"
+/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "CREATE USER 'nodebox'@'127.0.0.1' IDENTIFIED BY 'nodebox';"
+/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "CREATE USER 'nodebox'@'%' IDENTIFIED BY 'nodebox';"
 
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,EXECUTE ON esg.* TO 'esgsys'@'localhost';"
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT FILE ON *.* TO 'esgsys'@'localhost';"
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,EXECUTE ON esg.* TO 'esgsys'@'127.0.0.1';"
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT FILE ON *.* TO 'esgsys'@'127.0.0.1';"
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,EXECUTE ON esg.* TO 'esgsys'@'%';"
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT FILE ON *.* TO 'esgsys'@'%';"
+/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,EXECUTE ON nodebox.* TO 'nodebox'@'localhost';"
+/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT FILE ON *.* TO 'nodebox'@'localhost';"
+/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,EXECUTE ON nodebox.* TO 'nodebox'@'127.0.0.1';"
+/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT FILE ON *.* TO 'nodebox'@'127.0.0.1';"
+/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,EXECUTE ON nodebox.* TO 'nodebox'@'%';"
+/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT FILE ON *.* TO 'nodebox'@'%';"
 
 
 ### Apache ###
@@ -243,13 +196,13 @@ cd /tmp
 tar -zxvf /tmp/ruby-2.1.1.tar.gz
 cd  /tmp/ruby-2.1.1
 ./configure
+make
+sudo make install
 
 
 ### Install Ruby gems ###
 sudo gem install git-up
 sudo gem install travis
-make
-sudo make install
 
 
 
@@ -270,13 +223,19 @@ cat /tmp/path >> /tmp/bash.bashrc
 sudo chown root:root /tmp/bash.bashrc
 sudo mv /tmp/bash.bashrc /etc/bash.bashrc
 
-# Add ifconfig to the path
-sudo ln -s /sbin/ifconfig /usr/bin/ifconfig
-
 
 ### Update the /etc/hosts file ###
 printf '127.0.0.1       localhost\n127.0.1.1       debian-squeeze.caris.de debian-squeeze nodebox\n\n# The following lines are desirable for IPv6 capable hosts\n::1     ip6-localhost ip6-loopback\nfe00::0 ip6-localnet\nff00::0 ip6-mcastprefix\nff02::1 ip6-allnodes\nff02::2 ip6-allrouters' > /tmp/hosts
 sudo mv /tmp/hosts /etc/hosts
+
+
+### Install Git Aware Prompt ###
+mkdir ~/.bash
+cd ~/.bash
+git clone git://github.com/jimeh/git-aware-prompt.git
+
+printf 'export GITAWAREPROMPT=~/.bash/git-aware-prompt\nsource $GITAWAREPROMPT/main.sh\n\nexport PS1=\"\${debian_chroot:+(\\$debian_chroot)}\\[\\033[01;32m\\]\\u@\\h\\[\\033[00m\\]:\\[\\033[01;34m\\]\\w\\[\\033[00m\\] \\[$txtcyn\\]\\$git_branch\\[$txtred\\]\\$git_dirty\\[$txtrst\\]\$ "' > ~/.bash_profile
+
 
 
 ### Set a message of the day ###

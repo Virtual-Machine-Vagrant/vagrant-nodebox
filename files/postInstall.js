@@ -72,29 +72,6 @@ function output(message, success) {
 output("System architecture", is64Bit ? process.arch === "x64" : process.arch === "ia32");
 
 
-/* Check global dependencies */
-try {
-	require("cucumber");
-	output("NodeJS Cucumber", true);
-} catch(err) {
-	output("NodeJS Cucumber", false);
-}
-
-try {
-	require("supervisor");
-	output("NodeJS Supervisor", true);
-} catch(err) {
-	output("NodeJS Supervisor", false);
-}
-
-try {
-	require("bower");
-	output("NodeJS Bower", true);
-} catch(err) {
-	output("NodeJS Bower", false);
-}
-
-
 
 /* N */
 exec("which n", function(code, stdout, stderr) {

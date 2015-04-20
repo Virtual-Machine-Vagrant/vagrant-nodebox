@@ -9,14 +9,7 @@ A script to create a NodeJS environment
  - MySQL 5.6.16
  - Ant
  - Git
-
-### NodeJS Global Modules
- - Chai
- - JSHint
- - Mocha
- - N
- - Sinon
- - Supervisor
+ - [Git Aware Prompt](https://github.com/jimeh/git-aware-prompt)
 
 **NB.** This is a 64 bit install.  If you have a 32 bit system, this will not work.
 
