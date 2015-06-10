@@ -24,7 +24,7 @@ sudo apt-get update
 
 
 ### Install system dependencies
-sudo apt-get install -y ant apache2 build-essential curl g++ git libaio1 libaio-dev nfs-common openssl
+sudo apt-get install -y ant apache2 build-essential curl g++ git libaio1 libaio-dev nfs-common openssl php5
 
 
 ### NodeJS ###
