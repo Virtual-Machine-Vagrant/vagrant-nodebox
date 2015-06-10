@@ -8,7 +8,7 @@
 # Ruby 2.1.1
 # Apache
 # MongoDB 2.4.9
-# MySQL 5.6.16
+# MySQL
 # Ant
 # Git
 
@@ -23,8 +23,12 @@ sudo chown vagrant:vagrant /opt/
 sudo apt-get update
 
 
+echo mysql-server mysql-server/root_password password password | sudo debconf-set-selections
+echo mysql-server mysql-server/root_password_again password password | sudo debconf-set-selections
+
+
 ### Install system dependencies
-sudo apt-get install -y ant apache2 build-essential curl g++ git libaio1 libaio-dev nfs-common openssl php5
+sudo apt-get install -y ant apache2 build-essential curl g++ git libaio1 libaio-dev nfs-common openssl php5 php5-mysql mysql-server
 
 
 ### NodeJS ###
@@ -97,52 +101,15 @@ sudo service mongodb start
 ### MySQL ###
 
 
-# Download
-wget http://downloads.sourceforge.net/project/mysql.mirror/MySQL%205.6.16/mysql-5.6.16-debian6.0-x86_64.deb -O /tmp/mysql-5.6.16-debian6.0-x86_64.deb
-
-# Install
-sudo dpkg -i /tmp/mysql-5.6.16-debian6.0-x86_64.deb
 
 # Finish mysql installation
-sudo groupadd mysql
-sudo useradd -r -g mysql mysql
-sudo chown -R mysql /opt/mysql/server-5.6/
-sudo chgrp -R mysql /opt/mysql/server-5.6/
-sudo /opt/mysql/server-5.6/scripts/mysql_install_db --user=mysql
-sudo chown -R root /opt/mysql/server-5.6/
-sudo chown -R mysql /opt/mysql/server-5.6/data
-sudo mkdir -p /opt/mysql/server-5.6/log
-sudo chown mysql /opt/mysql/server-5.6/log
-sudo chmod 755 /opt/mysql/server-5.6/log
+printf '#\n# The MySQL database server configuration file.\n#\n# You can copy this to one of:\n# - "/etc/mysql/my.cnf" to set global options,\n# - "~/.my.cnf" to set user-specific options.\n# \n# One can use all long options that the program supports.\n# Run program with --help to get a list of available options and with\n# --print-defaults to see which it would actually understand and use.\n#\n# For explanations see\n# http://dev.mysql.com/doc/mysql/en/server-system-variables.html\n\n# This will be passed to all mysql clients\n# It has been reported that passwords should be enclosed with ticks/quotes\n# escpecially if they contain "#" chars...\n# Remember to edit /etc/mysql/debian.cnf when changing the socket location.\n[client]\nport		= 3306\nsocket		= /var/run/mysqld/mysqld.sock\n\n# Here is entries for some specific programs\n# The following values assume you have at least 32M ram\n\n# This was formally known as [safe_mysqld]. Both versions are currently parsed.\n[mysqld_safe]\nsocket		= /var/run/mysqld/mysqld.sock\nnice		= 0\n\n[mysqld]\n#\n# * Basic Settings\n#\nuser		= mysql\npid-file	= /var/run/mysqld/mysqld.pid\nsocket		= /var/run/mysqld/mysqld.sock\nport		= 3306\nbasedir		= /usr\ndatadir		= /var/lib/mysql\ntmpdir		= /tmp\nlc-messages-dir	= /usr/share/mysql\nskip-external-locking\n#\n# Instead of skip-networking the default is now to listen only on\n# localhost which is more compatible and is not less secure.\n#bind-address		= 127.0.0.1\n#\n# * Fine Tuning\n#\nkey_buffer		= 16M\nmax_allowed_packet	= 16M\nthread_stack		= 192K\nthread_cache_size       = 8\n# This replaces the startup script and checks MyISAM tables if needed\n# the first time they are touched\nmyisam-recover         = BACKUP\n#max_connections        = 100\n#table_cache            = 64\n#thread_concurrency     = 10\n#\n# * Query Cache Configuration\n#\nquery_cache_limit	= 1M\nquery_cache_size        = 16M\n#\n# * Logging and Replication\n#\n# Both location gets rotated by the cronjob.\n# Be aware that this log type is a performance killer.\n# As of 5.1 you can enable the log at runtime!\n#general_log_file        = /var/log/mysql/mysql.log\n#general_log             = 1\n#\n# Error log - should be very few entries.\n#\nlog_error = /var/log/mysql/error.log\n#\n# Here you can see queries with especially long duration\n#log_slow_queries	= /var/log/mysql/mysql-slow.log\n#long_query_time = 2\n#log-queries-not-using-indexes\n#\n# The following can be used as easy to replay backup logs or for replication.\n# note: if you are setting up a replication slave, see README.Debian about\n#       other settings you may need to change.\n#server-id		= 1\n#log_bin			= /var/log/mysql/mysql-bin.log\nexpire_logs_days	= 10\nmax_binlog_size         = 100M\n#binlog_do_db		= include_database_name\n#binlog_ignore_db	= include_database_name\n#\n# * InnoDB\n#\n# InnoDB is enabled by default with a 10MB datafile in /var/lib/mysql/.\n# Read the manual for more InnoDB related options. There are many!\n#\n# * Security Features\n#\n# Read the manual, too, if you want chroot!\n# chroot = /var/lib/mysql/\n#\n# For generating SSL certificates I recommend the OpenSSL GUI "tinyca".\n#\n# ssl-ca=/etc/mysql/cacert.pem\n# ssl-cert=/etc/mysql/server-cert.pem\n# ssl-key=/etc/mysql/server-key.pem\n\n\n\n[mysqldump]\nquick\nquote-names\nmax_allowed_packet	= 16M\n\n[mysql]\n#no-auto-rehash	# faster start of mysql but no tab completition\n\n[isamchk]\nkey_buffer		= 16M\n\n#\n# * IMPORTANT: Additional settings that can override those from this file!\n#   The files must end with ".cnf", otherwise theyll be ignored.\n#\n!includedir /etc/mysql/conf.d/' > /tmp/my.cnf
+sudo mv /tmp/my.cnf /etc/mysql/my.cnf
+mysql -u root -ppassword -e "GRANT ALL PRIVILEGES ON *.* TO root@'%' IDENTIFIED BY 'password';"
 
-sudo cp /opt/mysql/server-5.6/support-files/mysql.server /etc/init.d/mysql.server
-sudo update-rc.d mysql.server defaults
+mysql -u root -ppassword -e "FLUSH PRIVILEGES;"
 
-# Create /etc/my.cnf with the following content
-printf '[mysqld]\n\n## General\ndatadir                         = /opt/mysql/server-5.6/data\nskip-name-resolve\nsql-mode                        = NO_ENGINE_SUBSTITUTION\n\n## Cache\nthread-cache-size               = 16\ntable-open-cache                = 4096\ntable-definition-cache          = 2048\nquery-cache-size                = 32M \nquery-cache-limit               = 1M\n\n## Per-thread Buffers\nsort-buffer-size                = 1M\nread-buffer-size                = 1M\nread-rnd-buffer-size            = 1M\njoin-buffer-size                = 1M\n\n## Temp Tables\ntmp-table-size                  = 32M \nmax-heap-table-size             = 64M \n\n## Networking\nback-log                        = 100\nmax-connect-errors              = 10000\nmax-allowed-packet              = 16M\ninteractive-timeout             = 3600\nwait-timeout                    = 600\n\n## MyISAM\nkey-buffer-size                 = 64M \nmyisam-sort-buffer-size         = 128M\n\n## InnoDB\ninnodb-buffer-pool-size        = 128M\ninnodb-log-file-size           = 100M\ninnodb-log-buffer-size         = 8M\ninnodb-file-per-table          = 1\ninnodb-open-files              = 300\n\n## Replication\nserver-id                       = 1\nrelay-log-space-limit           = 16G\nexpire-logs-days                = 7\n\n\n[mysqld_safe]\nlog-error                       = /opt/mysql/server-5.6/log/mysqld.log\nopen-files-limit                = 65535\n\n\n[mysql]\nno-auto-rehash' > /tmp/my.cnf
-sudo mv /tmp/my.cnf /etc
-sudo chown root:root /etc/my.cnf
-
-# Start the service
-sudo service mysql.server start
-
-# Set the password/permissions
-/opt/mysql/server-5.6/bin/mysqladmin -u root password 'password'
-
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT ALL PRIVILEGES ON *.* TO root@'localhost' IDENTIFIED BY 'password';"
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT ALL PRIVILEGES ON *.* TO root@'127.0.0.1' IDENTIFIED BY 'password';"
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT ALL PRIVILEGES ON *.* TO root@'%' IDENTIFIED BY 'password';"
-
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "CREATE USER 'nodebox'@'localhost' IDENTIFIED BY 'nodebox';"
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "CREATE USER 'nodebox'@'127.0.0.1' IDENTIFIED BY 'nodebox';"
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "CREATE USER 'nodebox'@'%' IDENTIFIED BY 'nodebox';"
-
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,EXECUTE ON nodebox.* TO 'nodebox'@'localhost';"
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT FILE ON *.* TO 'nodebox'@'localhost';"
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,EXECUTE ON nodebox.* TO 'nodebox'@'127.0.0.1';"
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT FILE ON *.* TO 'nodebox'@'127.0.0.1';"
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT SELECT,INSERT,UPDATE,DELETE,EXECUTE ON nodebox.* TO 'nodebox'@'%';"
-/opt/mysql/server-5.6/bin/mysql -u root -ppassword -e "GRANT FILE ON *.* TO 'nodebox'@'%';"
+sudo service mysql restart
 
 
 ### Apache ###
