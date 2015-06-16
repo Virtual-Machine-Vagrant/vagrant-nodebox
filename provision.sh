@@ -31,6 +31,15 @@ echo mysql-server mysql-server/root_password_again password password | sudo debc
 sudo apt-get install -y ant apache2 build-essential curl g++ git libaio1 libaio-dev nfs-common openssl php5 php5-mysql mysql-server
 
 
+### PHP ###
+
+
+# Install composer
+cd /tmp
+curl -sS https://getcomposer.org/installer | php
+sudo mv /tmp/composer.phar /usr/local/bin/composer
+
+
 ### NodeJS ###
 
 
