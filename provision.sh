@@ -5,6 +5,7 @@
 
 ### Software ###
 # NodeJS 0.10.25
+# PHP 5.4
 # Ruby 2.1.1
 # Apache
 # MongoDB 2.4.9
@@ -32,6 +33,9 @@ sudo apt-get install -y ant apache2 build-essential curl g++ git libaio1 libaio-
 
 
 ### PHP ###
+
+
+# Configure php.ini with dev settings
 
 
 # Install composer
