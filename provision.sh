@@ -5,7 +5,7 @@
 
 ### Software ###
 # NodeJS 0.10.25
-# PHP 5.4
+# PHP 5.6.10
 # Ruby 2.1.1
 # Apache
 # MongoDB 2.4.9
@@ -24,16 +24,38 @@ sudo chown vagrant:vagrant /opt/
 sudo apt-get update
 
 
+# Set the MySQL password so we can use the Aptitude package
 echo mysql-server mysql-server/root_password password password | sudo debconf-set-selections
 echo mysql-server mysql-server/root_password_again password password | sudo debconf-set-selections
 
 
 ### Install system dependencies
-sudo apt-get install -y ant apache2 build-essential curl g++ git libaio1 libaio-dev nfs-common openssl php5 php5-mysql mysql-server
+sudo apt-get install -y ant apache2 apache2-prefork-dev build-essential curl g++ git libaio1 libaio-dev nfs-common openssl mysql-server
 
 
 ### PHP ###
 
+
+# PHP dependencies
+sudo apt-get install -y libxml2 libxml2-dev libssl-dev pkg-config curl libcurl4-nss-dev enchant libenchant-dev libjpeg8 libjpeg8-dev libpng12-0 libpng12-dev libvpx1 libvpx-dev libfreetype6 libfreetype6-dev libt1-5 libt1-dev libgmp10 libgmp-dev libicu48 libicu-dev mcrypt libmcrypt4 libmcrypt-dev libpspell-dev libedit2 libedit-dev libsnmp15 libsnmp-dev libxslt1.1 libxslt1-dev
+
+
+# Download PHP
+cd /tmp
+wget http://uk1.php.net/get/php-5.6.10.tar.gz/from/this/mirror -O /tmp/php-5.6.10.tar.gz
+tar -zxvf php-5.6.10.tar.gz
+cd /tmp/php-5.6.10
+
+# http://devincharge.com/compiling-php-5-4-ubuntu-12-04/
+
+# Configure PHP
+./configure --enable-debug --with-apxs2 --with-pear --with-zlib --enable-cgi --with-config-file-path=/usr/local/php/conf --with-gd --with-curl --with-mysql --with-mysqli --with-mcrypt
+# ./configure --prefix=/usr/local/php --enable-fpm --with-fpm-user=www-data --with-fpm-group=www-data --with-config-file-path=/usr/local/php/conf --with-config-file-scan-dir=/usr/local/php/conf.d --enable-debug --with-openssl --with-kerberos --with-zlib --enable-calendar --with-curl --with-enchant --enable-exif --enable-ftp --with-gd --with-jpeg-dir=/usr --with-png-dir=/usr --with-vpx-dir=/usr --with-freetype-dir=/usr --with-t1lib --enable-exif --enable-gd-native-ttf --enable-gd-jis-conv --with-gettext --with-gmp --with-mhash --enable-intl --enable-mbstring --with-mcrypt --with-mysql --with-mysqli --enable-pcntl --with-pdo-mysql --with-pspell --with-libedit --with-readline --enable-shmop --with-snmp --enable-soap --enable-sockets --enable-sysvmsg --enable-sysvshm --with-xsl --enable-zip --with-pear --enable-zend-signals --enable-maintainer-zts
+
+
+# Install PHP
+make
+sudo make install
 
 # Configure php.ini with dev settings
 
