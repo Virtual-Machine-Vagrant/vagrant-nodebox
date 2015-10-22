@@ -50,9 +50,10 @@ _@todo_
 Installation should be very simple and take fewer than 15 minutes from start to finish
 
  1. Download and install the appropriate version of Vagrant from [VagrantUp.com](http://www.vagrantup.com/downloads.html)
- 2. Install the [VBGuest](https://github.com/dotless-de/vagrant-vbguest) plugin (optional, but strongly recommended)
- 2. In the root of the vagrant-nodebox project, type `vagrant up`
- 3. That's it.
+ 2. Install the [Vagrant Triggers](https://github.com/emyl/vagrant-triggers) plugin
+ 3. Install the [VBGuest](https://github.com/dotless-de/vagrant-vbguest) plugin (optional, but strongly recommended)
+ 4. In the root of the vagrant-nodebox project, type `vagrant up`
+ 5. That's it.
 
 Once the script has finished running, you will have a complete environment for you to run your projects from.  On your local machine, you will need to put the files in the directory that contains the vagrant-nodebox folder (the `../` path, relative to thie vagrant-nodebox directory).  This folder will sync to `/opt/dev` on your Vagrant box.
 
