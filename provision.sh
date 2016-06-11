@@ -4,13 +4,9 @@
 # file, everything that builds the box is executed.
 
 ### Software ###
-# NodeJS 0.10.25
-# PHP 5.4
-# Ruby 2.1.1
-# Apache
-# MongoDB 2.4.9
+# NodeJS 4.4.5
+# MongoDB 3.2.7
 # MySQL
-# Ant
 # Git
 
 
@@ -29,33 +25,21 @@ echo mysql-server mysql-server/root_password_again password password | sudo debc
 
 
 ### Install system dependencies
-sudo apt-get install -y ant apache2 build-essential curl g++ git libaio1 libaio-dev nfs-common openssl php5 php5-mysql mysql-server
-
-
-### PHP ###
-
-
-# Configure php.ini with dev settings
-
-
-# Install composer
-cd /tmp
-curl -sS https://getcomposer.org/installer | php
-sudo mv /tmp/composer.phar /usr/local/bin/composer
+sudo apt-get install -y build-essential curl g++ git libaio1 libaio-dev nfs-common openssl mysql-server
 
 
 ### NodeJS ###
 
 
-### Node 0.10.25
+### Node 4.4.5
 # Download the binary
-wget http://nodejs.org/dist/v0.10.25/node-v0.10.25-linux-x64.tar.gz -O /tmp/node-v0.10.25-linux-x64.tar.gz
+wget http://nodejs.org/dist/v4.4.5/node-v4.4.5-linux-x64.tar.gz -O /tmp/node-v4.4.5-linux-x64.tar.gz
 
 # Unpack it
 cd /tmp
-tar -zxvf /tmp/node-v0.10.25-linux-x64.tar.gz
-mv /tmp/node-v0.10.25-linux-x64 /opt/node-v0.10.25-linux-x64
-ln -s /opt/node-v0.10.25-linux-x64 /opt/nodejs
+tar -zxvf /tmp/node-v4.4.5-linux-x64.tar.gz
+mv /tmp/node-v4.4.5-linux-x64 /opt/node-v4.4.5-linux-x64
+ln -s /opt/node-v4.4.5-linux-x64 /opt/nodejs
 
 # Set the node_path
 export NODE_PATH=/opt/nodejs/lib/node_modules
@@ -73,7 +57,7 @@ export NODE_PATH=$NODE_PATH:/usr/local/lib/node_modules
 
 
 # Download it
-wget http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.4.9.tgz -O /tmp/mongodb-linux-x86_64-2.4.9.tgz
+wget http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-3.2.7.tgz -O /tmp/mongodb-linux-x86_64-3.2.7.tgz
 
 # Create mongo user and group
 sudo groupadd -g 550 mongodb
@@ -81,9 +65,9 @@ sudo useradd -g mongodb -u 550 -c "MongoDB Database Server" -M -s /sbin/nologin 
 
 # Unpack it and move to /opt directory
 cd /tmp
-tar -zxvf mongodb-linux-x86_64-2.4.9.tgz
-mv /tmp/mongodb-linux-x86_64-2.4.9 /opt
-ln -s /opt/mongodb-linux-x86_64-2.4.9 /opt/mongodb
+tar -zxvf mongodb-linux-x86_64-3.2.7.tgz
+mv /tmp/mongodb-linux-x86_64-3.2.7 /opt
+ln -s /opt/mongodb-linux-x86_64-3.2.7 /opt/mongodb
 
 # Create the directories
 mkdir -p /opt/mongodb/data
@@ -123,66 +107,6 @@ mysql -u root -ppassword -e "GRANT ALL PRIVILEGES ON *.* TO root@'%' IDENTIFIED 
 mysql -u root -ppassword -e "FLUSH PRIVILEGES;"
 
 sudo service mysql restart
-
-
-### Apache ###
-
-
-# Create the home directory
-sudo mkdir -p /var/www/html
-sudo chmod 755 /var/www/html
-sudo chown -R vagrant:vagrant /var/www
-mv /var/www/index.html /var/www/html
-
-# Already installed, just needs configuring
-echo "ServerName localhost" > /tmp/servername
-sudo mv /tmp/servername /etc/apache2/conf.d/servername
-
-printf '# gzip compression as recommended by Rackspace\n\n############################################\n## enable apache served files compression\n## http://developer.yahoo.com/performance/rules.html#gzip\n<IfModule mod_deflate.c>\n\n    # Insert filter on all content\n    SetOutputFilter DEFLATE\n    # Insert filter on selected content types only\n    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript\n\n    # Netscape 4.x has some problems...\n    BrowserMatch ^Mozilla/4 gzip-only-text/html\n\n    # Netscape 4.06-4.08 have some more problems\n    BrowserMatch ^Mozilla/4\.0[678] no-gzip\n\n    # MSIE masquerades as Netscape, but it is fine\n    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html\n\n    # Dont compress images\n    SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip dont-vary\n\n    # Make sure proxies dont deliver the wrong content\n     Header append Vary Accept-Encoding env=!dont-vary\n\n</IfModule>\n\n############################################\n# Expires\n############################################\n<IfModule mod_expires.c>\n\n  ExpiresActive on\n  \n  ExpiresDefault                          "access plus 1 month"\n\n# cache.appcache needs re-requests in FF 3.6 (thanks Remy ~Introducing HTML5)\n  ExpiresByType text/cache-manifest       "access plus 0 seconds"\n\n# Your document html\n  ExpiresByType text/html                 "access plus 0 seconds"\n\n# Data\n  ExpiresByType text/xml                  "access plus 0 seconds"\n  ExpiresByType application/xml           "access plus 0 seconds"\n  ExpiresByType application/json          "access plus 0 seconds"\n\n# Feed\n  ExpiresByType application/rss+xml       "access plus 1 hour"\n  ExpiresByType application/atom+xml      "access plus 1 hour"\n\n# Favicon (cannot be renamed)\n  ExpiresByType image/x-icon              "access plus 1 week"\n\n# Media: images, video, audio\n  ExpiresByType image/gif                 "access plus 1 week"\n  ExpiresByType image/png                 "access plus 1 week"\n  ExpiresByType image/jpg                 "access plus 1 week"\n  ExpiresByType image/jpeg                "access plus 1 week"\n  ExpiresByType video/ogg                 "access plus 1 week"\n  ExpiresByType audio/ogg                 "access plus 1 week"\n  ExpiresByType video/mp4                 "access plus 1 week"\n  ExpiresByType video/webm                "access plus 1 week"\n\n# HTC files  (css3pie)\n  ExpiresByType text/x-component          "access plus 1 month"\n\n# Webfonts\n  ExpiresByType application/x-font-ttf    "access plus 1 month"\n  ExpiresByType font/opentype             "access plus 1 month"\n  ExpiresByType application/x-font-woff   "access plus 1 month"\n  ExpiresByType image/svg+xml             "access plus 1 month"\n  ExpiresByType application/vnd.ms-fontobject "access plus 1 month"\n\n# CSS and JavaScript\n  ExpiresByType text/css                  "access plus 1 year"\n  ExpiresByType application/javascript    "access plus 1 year"\n  ExpiresByType application/x-javascript  "access plus 1 year" \n\n</IfModule>' > /tmp/mod_gzip_mod_expires.conf
-sudo mv /tmp/mod_gzip_mod_expires.conf /etc/apache2/mods-enabled
-
-printf '# Originally from  https://github.com/h5bp/html5-boilerplate/blob/master/.htaccess\n\n# ----------------------------------------------------------------------\n# Proper MIME type for all files\n# ----------------------------------------------------------------------\n\n# JavaScript\n#   Normalize to standard type (its sniffed in IE anyways)\n\n#   tools.ietf.org/html/rfc4329#section-7.2\n\nAddType application/javascript         js jsonp\nAddType application/json               json\n\n\n# Audio\nAddType audio/ogg                      oga ogg\n\nAddType audio/mp4                      m4a f4a f4b\n\n\n# Video\nAddType video/ogg                      ogv\n\nAddType video/mp4                      mp4 m4v f4v f4p \n\nAddType video/webm                     webm\nAddType video/x-flv                    flv\n\n\n# SVG\n#   Required for svg webfonts on iPad\n\n#   twitter.com/FontSquirrel/status/14855840545\n\nAddType     image/svg+xml              svg svgz\nAddEncoding gzip                       svgz\n\n\n# Webfonts\nAddType application/vnd.ms-fontobject  eot\n\nAddType application/x-font-ttf         ttf ttc\nAddType font/opentype                  otf\n\nAddType application/x-font-woff        woff\n\n\n# Assorted types\nAddType image/x-icon                        ico\n\nAddType image/webp                          webp\nAddType text/cache-manifest                 appcache manifest\n\nAddType text/x-component                    htc\nAddType application/xml                     rss atom xml rdf\n\nAddType application/x-chrome-extension      crx\nAddType application/x-opera-extension       oex\n\nAddType application/x-xpinstall             xpi\nAddType application/octet-stream            safariextz\n\nAddType application/x-web-app-manifest+json webapp\n\nAddType text/x-vcard                        vcf\nAddType application/x-shockwave-flash       swf' > /tmp/more_mime_types.conf
-sudo mv /tmp/more_mime_types.conf /etc/apache2/mods-enabled
-
-sudo chown root:root /etc/apache2/mods-enabled/mod_gzip_mod_expires.conf
-sudo chown root:root /etc/apache2/mods-enabled/more_mime_types.conf
-
-printf '' > /tmp/default
-sudo mv /tmp/default /etc/apache2/sites-available/default
-
-sudo a2ensite default
-
-sudo a2enmod deflate expires headers proxy proxy_http rewrite
-
-sudo service apache2 restart
-
-
-
-### Change hostname ###
-echo "nodebox" > /tmp/hostname
-sudo mv /tmp/hostname /etc/hostname
-
-
-### Install Ruby ###
-
-# Remove installed version
-sudo apt-get purge ruby ruby-dev ruby1.8*
-
-# Download the source code
-wget http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.1.tar.gz -O /tmp/ruby-2.1.1.tar.gz
-
-# Unpack it
-cd /tmp
-tar -zxvf /tmp/ruby-2.1.1.tar.gz
-cd  /tmp/ruby-2.1.1
-./configure
-make
-sudo make install
-
-
-### Install Ruby gems ###
-sudo gem install git-up
-sudo gem install travis
 
 
 

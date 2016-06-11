@@ -63,7 +63,7 @@ function output(message, success) {
 
 		return out;
 	}
-	
+
 	console.log(toColor(message));
 
 }
@@ -110,36 +110,8 @@ exec("which mysql", function(code, stdout, stderr) {
 
 });
 
-
-
-/* Apache */
-var req = http.request({
-	host: "localhost",
-	port: 80,
-	path: "/",
-	method: "GET"
-}, function(res) {
-	
-	res.setEncoding('utf8');
-
-	var data = "";
-	res.on("data", function(tmpData) {
-		data += tmpData;
-	});
-
-	res.on("end", function() {
-		if(data !== "") {
-			output("Apache", true);
-		}
-	});
-
-}).on("error", function(err) {
-	output("Apache", false);
-});
-req.end();
-
 /* Check IP */
-var ip = is64Bit ? "10.20.30.60" : "10.20.30.50";
+var ip = is64Bit ? "10.20.30.40" : "10.20.30.50";
 var interfaces = os.networkInterfaces();
 
 var match = false;
